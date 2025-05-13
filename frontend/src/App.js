@@ -1,29 +1,33 @@
-import "./App.css";
-import AllRoutes from "./Router/AllRoutes";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import { useLocation } from "react-router-dom";
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+
+import AllRoutes from './Router/AllRoutes';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
-  const location = useLocation();
+    const location = useLocation();
 
-  const isRestrictedPath = [
-  "/login",
-  "/register-user",
-  "/admin-login",
-  "/admin/admin"
-].includes(location.pathname);
+    const isRestrictedPath = [
+        "/login",
+        "/register-user",
+        "/admin-login",
+        "/admin/admin"
+    ].includes(location.pathname);
 
-return (
-  <div>
-    {!isRestrictedPath && <Navbar />}
-    <div style={{ minHeight: "90vh" }}>
-      <AllRoutes />
-    </div>
-    {!isRestrictedPath && <Footer />}
-  </div>
-);
+    return (
+        <div className="d-flex flex-column min-vh-100">
+            {!isRestrictedPath && <Navbar />}
 
+            <main className="flex-grow-1 py-4">
+                <AllRoutes />
+            </main>
+
+            {!isRestrictedPath && <Footer />}
+        </div>
+    );
 }
-export default App;
 
+export default App;

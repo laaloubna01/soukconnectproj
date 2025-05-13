@@ -24,9 +24,20 @@ public interface UserService {
 
 	public User changePassword(Integer userId, UserDTO customer)  throws UserException;
 
+	User updateUserDetails(Integer userId, UserDTO userDTO) throws UserException;
+
 	public String deactivateUser(Integer userId) throws UserException;
 
 	public User getUserDetails(Integer userId)throws UserException;
 
 	public List<User> getAllUserDetails() throws UserException;
+
+
+
+
 }
+
+
+
+
+

@@ -1,6 +1,6 @@
 package Ecom.ModelDTO;
 
-
+import java.util.List;
 
 import lombok.Data;
 
@@ -12,5 +12,6 @@ public class OrdersDTO {
     private String orderDate;
     private Double orderAmount;
     private String paymentStatus;
+    private List<OrderItemDTO> orderItems;
 
 }

@@ -36,7 +36,7 @@ function AddProduct() {
       });
       alert("Product Added Successfully......");
       // Redirect to the admin page after successful submission
-      navigate("/admin");
+      navigate("/admin/admin");
     } catch (error) {
       alert(error.response.data.message);
       console.error("Error adding product:", error.response.data);
@@ -96,16 +96,17 @@ function AddProduct() {
         <div className="input-group">
           <label htmlFor="category">Category:</label>
           <select
-            id="category"
-            name="category"
-            value={product.category}
-            onChange={handleChange}
+              id="category"
+              name="category"
+              value={product.category}
+              onChange={handleChange}
           >
             <option value="">Select a category</option>
-            <option value="fruits">Fruits</option>
-            <option value="vegetables">Vegetables</option>
-            <option value="electronics">Electronic</option>
-            <option value="gadgets">Gadgets</option>
+            <option value="Accessoires">Accessoires</option>
+            <option value="Artisanat">Artisanat</option>
+            <option value="Textile">Textile</option>
+            <option value="Alimentation">Alimentation</option>
+            <option value="beauté">beauté</option>
           </select>
         </div>
 

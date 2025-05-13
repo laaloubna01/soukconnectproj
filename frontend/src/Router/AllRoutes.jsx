@@ -15,6 +15,7 @@ import { Routes, Route } from "react-router-dom";
 import { Privateroute,Privaterouteadmin } from "../Router/ProtectedRoute";
 import Admin from "../pages/Admin";
 import NotFound from "../components/NotFound";
+import ChatBot from "../components/ChatBot";
 
 const AllRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const AllRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<Product />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/chatbot" element={<ChatBot />} />
 
         <Route path="/user" element={<Privateroute />}>
           <Route path="cart" element={<Cart />} />

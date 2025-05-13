@@ -1,14 +1,27 @@
 import React, { useState } from "react";
-import "../comp_css/Admin.css";
+import { useNavigate } from "react-router-dom";
+import { Layout, Menu, Button, theme, Typography, Space } from "antd";
+import {
+  PlusOutlined,
+  UnorderedListOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  HomeOutlined,
+} from "@ant-design/icons";
 import AddProduct from "../components/AddProduct";
 import AddCustomerAdmin from "../components/AdminUserDetails";
 import AddOrderAdmin from "../components/AllOrderAdmin";
 import AllProductAdmin from "../components/AllProductAdmin";
-import { useNavigate } from "react-router-dom";
+
+const { Header, Sider, Content } = Layout;
+const { Title } = Typography;
 
 const Admin = () => {
-  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedComponent, setSelectedComponent] = useState("default");
   const navigate = useNavigate();
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
 
   const renderSelectedComponent = () => {
     switch (selectedComponent) {
@@ -23,57 +36,93 @@ const Admin = () => {
     }
   };
 
-  return (
-    <>
-      <div className="admin-navbar">
-        <h3
-          onClick={() => {
-            setSelectedComponent(<AllProductAdmin />);
-          }}
-        >
-          Admin Home
-        </h3>
-        <h1 style={{ textAlign: "center", color: "blue" }}>ADMIN PAGE</h1>
-        <h3
-          onClick={() => {
-            localStorage.removeItem("adminid");
-            localStorage.removeItem("jwtTocken");
-            navigate("/admin-login");
-          }}
-        >
-          Logout
-        </h3>
-      </div>
+  const handleLogout = () => {
+    localStorage.removeItem("adminid");
+    localStorage.removeItem("jwtToken");
+    navigate("/admin-login");
+  };
 
-      <div className="admincontainer">
-        <div className="productConatiner">{renderSelectedComponent()}</div>
-        <div className="boxConatiner">
-          <ul>
-            <li
-              onClick={() => {
-                setSelectedComponent("add-product");
+  return (
+      <Layout style={{ minHeight: "100vh" }}>
+        <Sider
+            breakpoint="lg"
+            collapsedWidth="0"
+            width={250}
+            style={{
+              background: colorBgContainer,
+              boxShadow: "2px 0 8px 0 rgba(29,35,41,0.05)",
+            }}
+        >
+          <div className="demo-logo-vertical" style={{ padding: "16px" }}>
+            <Title level={3} style={{ textAlign: "center", margin: 0 }}>
+              Admin Dashboard
+            </Title>
+          </div>
+          <Menu
+              theme="light"
+              mode="inline"
+              selectedKeys={[selectedComponent]}
+              onSelect={({ key }) => setSelectedComponent(key)}
+              items={[
+                {
+                  key: "default",
+                  icon: <HomeOutlined />,
+                  label: "Admin Home",
+                },
+                {
+                  key: "add-product",
+                  icon: <PlusOutlined />,
+                  label: "Add New Product",
+                },
+                {
+                  key: "all-orders",
+                  icon: <UnorderedListOutlined />,
+                  label: "View All Orders",
+                },
+                {
+                  key: "add-customer",
+                  icon: <UserOutlined />,
+                  label: "View All Customers",
+                },
+              ]}
+          />
+        </Sider>
+        <Layout>
+          <Header
+              style={{
+                padding: 0,
+                background: colorBgContainer,
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                paddingRight: "24px",
               }}
-            >
-              Add New Product
-            </li>
-            <li
-              onClick={() => {
-                setSelectedComponent("all-orders");
+          >
+            <Space>
+              <Button
+                  type="text"
+                  icon={<LogoutOutlined />}
+                  onClick={handleLogout}
+                  danger
+              >
+                Logout
+              </Button>
+            </Space>
+          </Header>
+          <Content
+              style={{
+                margin: "24px 16px",
+                padding: 24,
+                minHeight: 280,
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
               }}
-            >
-              View All Orders
-            </li>
-            <li
-              onClick={() => {
-                setSelectedComponent("add-customer");
-              }}
-            >
-              View All Customer
-            </li>
-          </ul>
-        </div>
-      </div>
-    </>
+          >
+            {renderSelectedComponent()}
+          </Content>
+        </Layout>
+      </Layout>
   );
 };
+
 export default Admin;

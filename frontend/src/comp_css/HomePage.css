@@ -1,0 +1,40 @@
+.hero-slide {
+    height: 80vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.product-image-container {
+    position: relative;
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 0.25rem 0.5rem;
+    color: white;
+    font-size: 0.75rem;
+}
+
+.product-image {
+    height: 250px;
+    object-fit: cover;
+}
+
+.category-image,
+.artisan-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+}

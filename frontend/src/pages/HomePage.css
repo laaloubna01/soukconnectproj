@@ -1,0 +1,172 @@
+/* Styles généraux */
+.home-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 80px; /* Compensation pour la navbar fixed */
+}
+
+/* Hero Carousel */
+.hero-carousel {
+    position: relative;
+    margin-top: -80px; /* Compense la navbar fixed */
+}
+
+.hero-slide {
+    height: 70vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    max-width: 800px;
+    padding: 2rem;
+    animation: fadeInUp 0.8s ease;
+    color: white; /* Texte en blanc pour tout le bloc */
+}
+
+.hero-content h1,
+.hero-content p {
+    color: white !important; /* Forcer le texte en blanc */
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cartes de catégories */
+.category-card {
+    background: white;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.category-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(154, 31, 26, 0.1);
+    border-radius: 50%;
+}
+
+/* Cartes de produits */
+.product-card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.product-image-container {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.05);
+}
+
+.product-badge {
+    top: 10px;
+    right: 10px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+/* Cartes artisans */
+.artisan-card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+}
+
+.artisan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.artisan-image-container {
+    height: 250px;
+    overflow: hidden;
+}
+
+.artisan-image-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.artisan-card:hover .artisan-image-container img {
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .hero-slide {
+        height: 60vh;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-slide {
+        height: 50vh;
+    }
+
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+}

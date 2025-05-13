@@ -8,9 +8,16 @@ import lombok.Data;
 @Data
 public class UserDTO {
 
-    @NotBlank(message = "New password can not be Blank..")
-    @NotNull(message = "New password Can not be Null..")
-    @Size(min = 5,max = 10)
-    private String newPassword;
+    @NotBlank(message = "Prénom ne peut pas être vide.")
+    private String firstName;
+
+    @NotBlank(message = "Nom ne peut pas être vide.")
+    private String lastName;
+
+    @NotBlank(message = "Email ne peut pas être vide.")
+    private String email;
+
+    @Size(min = 5, max = 10)
+    private String password;
 
 }

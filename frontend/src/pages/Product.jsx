@@ -10,162 +10,114 @@ const Product = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [priceOrder, setPriceOrder] = useState("All");
   const [nameSearch, setNameSearch] = useState("");
-  let userid = localStorage.getItem("userid");
+
+  const userid = localStorage.getItem("userid");
 
   const filterProducts = (category, priceOrder, nameSearch, data) => {
-    let filteredProducts = data;
+    let filtered = data;
 
     if (category !== "All") {
-      filteredProducts = filteredProducts.filter(
-        (product) => product.category === category
-      );
+      filtered = filtered.filter((product) => product.category === category);
     }
-    
+
     if (priceOrder === "LowToHigh") {
-      filteredProducts = filteredProducts.sort((a, b) => a.price - b.price);
+      filtered = [...filtered].sort((a, b) => a.price - b.price);
     } else if (priceOrder === "HighToLow") {
-      filteredProducts = filteredProducts.sort((a, b) => b.price - a.price);
+      filtered = [...filtered].sort((a, b) => b.price - a.price);
     }
 
     if (nameSearch !== "") {
       const searchQuery = nameSearch.toLowerCase();
-      filteredProducts = filteredProducts.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery)
+      filtered = filtered.filter((product) =>
+          product.name.toLowerCase().includes(searchQuery)
       );
     }
 
-    setFilteredProducts(filteredProducts);
+    setFilteredProducts(filtered);
   };
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8080/ecom/products/all")
-      .then((response) => {
-        setProducts(response.data);
-        filterProducts(selectedCategory, priceOrder, nameSearch, response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data from the API: ", error);
-      });
+        .get("http://127.0.0.1:8080/ecom/products/all")
+        .then((response) => {
+          setProducts(response.data);
+          filterProducts(selectedCategory, priceOrder, nameSearch, response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data: ", error);
+        });
   }, [selectedCategory, priceOrder, nameSearch]);
 
   const addProductToCart = (productid) => {
     api
-      .post(`/ecom/cart/add-product?userId=${userid}&productId=${productid}`)
-      .then((response) => {
-        localStorage.setItem("cartid", response.data.cartId);
-        alert("product added to Cart");
-      })
-      .catch((error) => {
-        if (error.response && error.response.data) {
-          alert(error.response.data.message);
-        } else {
-          alert("Error To adding Product . Please try again later.");
-          console.error("Error registering:", error);
-        }
-      });
+        .post(`/ecom/cart/add-product?userId=${userid}&productId=${productid}`)
+        .then((response) => {
+          localStorage.setItem("cartid", response.data.cartId);
+          alert("Product added to cart");
+        })
+        .catch((error) => {
+          alert(
+              error.response?.data?.message ||
+              "Error adding product. Please try again later."
+          );
+        });
   };
 
   return (
-    <div className="product-page">
-      <div className="filter-section">
-        <h2>Filter</h2>
-        <hr />
-        <label>Category</label>
-        <select
-          value={selectedCategory}
-          onChange={(e) => {
-            setSelectedCategory(e.target.value);
-          }}
-        >
-          <option value="All">All</option>
-          <option value="vegetables">Vegetable</option>
-          <option value="fruits">Fruits</option>
-          <option value="electronics">Electronic</option>
-          <option value="gadgets">Gaggets</option>
-        </select>
-        <br />
-        <label>Price:</label>
-        <div>
-          <select
-            value={priceOrder}
-            onChange={(e) => {
-              setPriceOrder(e.target.value);
-            }}
-          >
+      <div className="product-container">
+        <aside className="filter-panel">
+          <h3>Filters</h3>
+          <label>Category</label>
+          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+            <option value="All">All</option>
+            <option value="Accessoires">Accessoires</option>
+            <option value="Artisanat">Artisanat</option>
+            <option value="Textile">Textile</option>
+            <option value="Alimentation">Alimentation</option>
+            <option value="Beauté">Beauté</option>
+          </select>
+
+          <label>Price</label>
+          <select value={priceOrder} onChange={(e) => setPriceOrder(e.target.value)}>
             <option value="All">All</option>
             <option value="LowToHigh">Low to High</option>
-            <option value="HighToLow">High To Low</option>
+            <option value="HighToLow">High to Low</option>
           </select>
-        </div>
 
-        <br />
-        <div>
-          <h4>By Name</h4>
+          <label>Search by name</label>
           <input
-            type="text"
-            placeholder="Search by name"
-            value={nameSearch}
-            onChange={(e) => setNameSearch(e.target.value)}
+              type="text"
+              placeholder="e.g. amlou"
+              value={nameSearch}
+              onChange={(e) => setNameSearch(e.target.value)}
           />
-        </div>
-      </div>
+        </aside>
 
-      <div className="product-list">
-        {filteredProducts.length === 0 ? (
-          <h1
-            style={{
-              textAlign: "center",
-              margin: "50px",
-              color: "green",
-              width: "800px",
-            }}
-          >
-            Product Not found ....
-          </h1>
-        ) : (
-          filteredProducts.map((product) => (
-            <div className="product-card" key={product.productId}>
-              <div className="product-image1">
-                <img src={product.imageUrl} alt={product.name} />
-              </div>
-              <div className="product-info">
-                <h2>{product.name}</h2>
-                <p>
-                  <strong>Category :</strong> {product.category}
-                </p>
-                <p>
-                  <strong>Description: </strong>
-                  {product.description.substring(0, 25)}
-                </p>
-                <h2 className="product-price">Price: ₹ {product.price}</h2>
-                <p>
-                  {" "}
-                  <strong>Rating :</strong>
-                  {product.reviews.length === 0
-                    ? "Not Available"
-                    : product.reviews[0].rating}
-                </p>
-
-                <div>
-                  <button onClick={() => addProductToCart(product.productId)}>
-                    Add to Cart
-                  </button>
-                  <button>
-                    <Link
-                      to={`/product/${product.productId}`}
-                      style={{ textDecoration: "none", color: "white" }}
-                    >
-                      View
-                    </Link>
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))
-        )}
+        <section className="products-grid">
+          {filteredProducts.length === 0 ? (
+              <div className="no-products">No products found.</div>
+          ) : (
+              filteredProducts.map((product) => (
+                  <div className="product-card" key={product.productId}>
+                    <img className="product-img" src={product.imageUrl} alt={product.name} />
+                    <div className="product-details">
+                      <h4>{product.name}</h4>
+                      <p className="product-category">{product.category}</p>
+                      <p className="product-desc">{product.description.slice(0, 40)}...</p>
+                      <p className="product-price">MAD {product.price}</p>
+                      <p className="product-rating">
+                        Rating: {product.reviews.length > 0 ? product.reviews[0].rating : "N/A"}
+                      </p>
+                      <div className="btn-group">
+                        <button onClick={() => addProductToCart(product.productId)}>Add to Cart</button>
+                        <Link to={`/product/${product.productId}`} className="view-link">View</Link>
+                      </div>
+                    </div>
+                  </div>
+              ))
+          )}
+        </section>
       </div>
-    </div>
   );
 };
 

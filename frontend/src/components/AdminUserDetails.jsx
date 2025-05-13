@@ -1,74 +1,173 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../comp_css/AdminUserDetails.css'; 
 import api from '../Router/api';
+import '../comp_css/AdminUserDetails.css';
 
 function AdminUserDetails() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [users, setUsers] = useState([]);
+    const [newUser, setNewUser] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        phoneNumber: ''
+    });
+    const [editUser, setEditUser] = useState(null);
 
-  useEffect(() => {
-    api
-      .get('/ecom/customers/get-all-customer')
-      .then((response) => {
-        // Sort addresses for each user by timestamp in descending order
-        const sortedUsers = response.data.map((user) => ({
-          ...user,
-          address: user.address.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)),
-        }));
-        setUsers(sortedUsers);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      });
-  }, []);
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
-  // Function to get the latest address for a user
-  const getLatestAddress = (user) => {
-    const addresses = user.address;
-    if (addresses && addresses.length > 0) {
-      const latestAddress = addresses[0];
-      return (
-        <div>
-          <h3>Latest Address</h3>
-          <p>Flat No: {latestAddress.flatNo}</p>
-          <p>Street: {latestAddress.street}</p>
-          <p>City: {latestAddress.city}</p>
-          <p>State: {latestAddress.state}</p>
-          <p>Zip Code: {latestAddress.zipCode}</p>
+    const fetchUsers = () => {
+        api.get('/ecom/customers/get-all-customer')
+            .then(res => setUsers(res.data))
+            .catch(err => console.error('Erreur lors de la récupération des utilisateurs:', err));
+    };
+    console.log("Données envoyées au backend :", newUser);
+
+    const handleAddUser = () => {
+        api.post('/ecom/customers', newUser)
+
+            .then(() => {
+                fetchUsers();
+                setNewUser({
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    password: '',
+                    phoneNumber: ''
+                });
+            })
+            .catch(err => console.error('Erreur lors de l\'ajout de l\'utilisateur:', err));
+    };
+
+    const handleDeleteUser = (id) => {
+        if (window.confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) {
+            api.delete(`/ecom/customers/deactivate/${id}`)
+                .then(() => fetchUsers())
+                .catch(err => console.error('Erreur lors de la suppression de l\'utilisateur:', err));
+        }
+    };
+
+    const handleUpdatePassword = (userId, password) => {
+        const updatedUser = {
+            firstName: editUser.firstName,
+            lastName: editUser.lastName,
+            email: editUser.email,
+            password: password
+        };
+
+        api.put(`/ecom/customers/update/${userId}`, updatedUser)
+            .then(() => {
+                fetchUsers();
+                setEditUser(null);
+            })
+            .catch(err => console.error('Erreur lors de la mise à jour du mot de passe:', err));
+    };
+
+    return (
+        <div className="admin-container">
+            <h2 className="section-title">📋 Liste des clients</h2>
+            <div className="table-wrapper">
+                <table className="user-table">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Status</th>
+                        <th className="action-header">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {users.map(user => (
+                        <tr key={user.userId}>
+                            <td>{user.firstName} {user.lastName}</td>
+                            <td>{user.email}</td>
+                            <td>{user.phoneNumber}</td>
+                            <td>{user.userAccountStatus}</td>
+                            <td className="action-cell">
+                                <button
+                                    className="btn btn-edit"
+                                    onClick={() => setEditUser({ ...user, password: '' })}
+                                >
+                                    Modifier
+                                </button>
+                                <button
+                                    className="btn btn-delete"
+                                    onClick={() => handleDeleteUser(user.userId)}
+                                >
+                                    Supprimer
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Formulaire d'ajout */}
+            <h2 className="section-title">➕ Ajouter un nouveau client</h2>
+            <div className="add-form">
+                <input
+                    placeholder="Prénom"
+                    value={newUser.firstName}
+                    onChange={e => setNewUser({ ...newUser, firstName: e.target.value })}
+                />
+                <input
+                    placeholder="Nom"
+                    value={newUser.lastName}
+                    onChange={e => setNewUser({ ...newUser, lastName: e.target.value })}
+                />
+                <input
+                    placeholder="Email"
+                    value={newUser.email}
+                    onChange={e => setNewUser({ ...newUser, email: e.target.value })}
+                />
+                <input
+                    type="password"
+                    placeholder="Mot de passe"
+                    value={newUser.password}
+                    onChange={e => setNewUser({ ...newUser, password: e.target.value })}
+                />
+                <input
+                    placeholder="Téléphone"
+                    value={newUser.phoneNumber}
+                    onChange={e => setNewUser({ ...newUser, phoneNumber: e.target.value })}
+                />
+            </div>
+            <div style={{ marginTop: '10px', textAlign: 'center' }}>
+                <button className="btn btn-add" onClick={handleAddUser}>Ajouter</button>
+            </div>
+
+            {/* Formulaire de modification */}
+            {editUser && (
+                <div className="edit-form">
+                    <h3>✏️ Modifier le mot de passe de {editUser.firstName} {editUser.lastName}</h3>
+                    <input
+                        type="password"
+                        placeholder="Nouveau mot de passe"
+                        value={editUser.password}
+                        onChange={e => setEditUser({ ...editUser, password: e.target.value })}
+                    />
+                    <div style={{ marginTop: '10px' }}>
+                        <button
+                            className="btn btn-edit"
+                            onClick={() => handleUpdatePassword(editUser.userId, editUser.password)}
+                        >
+                            Mettre à jour
+                        </button>
+                        <button
+                            className="btn btn-cancel"
+                            onClick={() => setEditUser(null)}
+                            style={{ marginLeft: '10px' }}
+                        >
+                            Annuler
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
-      );
-    } else {
-      return <p>No address available</p>;
-    }
-  };
-
-  return (
-    <div className="admin-users">
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        users.map((user) => (
-          <div className="user-card" key={user.userId}>
-            <div className="user-info">
-              <h3>User Details</h3>
-              <p>User ID: {user.userId}</p>
-              <p>Email: {user.email}</p>
-              <p>Name: {user.firstName} {user.lastName}</p>
-              <p>Phone Number: {user.phoneNumber}</p>
-              <p>Register Time: {user.registerTime}</p>
-              <p>User Account Status: {user.userAccountStatus}</p>
-            </div>
-            <div className="user-address">
-              {getLatestAddress(user)}
-            </div>
-          </div>
-        ))
-      )}
-    </div>
-  );
+    );
 }
 
 export default AdminUserDetails;

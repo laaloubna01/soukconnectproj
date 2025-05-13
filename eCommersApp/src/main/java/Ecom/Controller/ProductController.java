@@ -68,4 +68,6 @@ public class ProductController {
         productService.removeProduct(productId);
         return new ResponseEntity<>("Product removed successfully.", HttpStatus.OK);
     }
+
+
 }

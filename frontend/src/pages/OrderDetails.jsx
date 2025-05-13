@@ -69,9 +69,7 @@ const OrderDetails = () => {
                     <p>
                       Order Date: {new Date(order.orderDate).toLocaleString()}
                     </p>
-                    <h3 style={{ color: "green" }}>
-                      Total Amount: ${order.totalAmount}
-                    </h3>
+
 
                     {order.status === "SHIPPED" ? (
                       <button style={{ backgroundColor: "green" }} disabled>

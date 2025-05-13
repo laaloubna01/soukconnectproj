@@ -34,17 +34,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByEmailId(String emailId) throws UserException {
 		return userRepository.findByEmail(emailId).orElseThrow(() -> new UserException("User not found"));
-
 	}
 
 	@Override
 	public User addUser(CustomerDTO customer) throws UserException {
 		if (customer == null)
-			throw new UserException("customer Can not be Null");
+			throw new UserException("Customer cannot be null");
+
 		Optional<User> findByEmail = userRepository.findByEmail(customer.getEmail());
 		if (findByEmail.isPresent()) {
-			System.out.println("inside add user method");
-			throw new RuntimeException("Email alredy Register");
+			throw new RuntimeException("Email already registered");
 		}
 
 		User newCustomer = new User();
@@ -63,12 +62,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User addUserAdmin(AdminDTO customer) throws UserException {
 		if (customer == null)
-			throw new UserException("admin Can not be Null");
+			throw new UserException("Admin cannot be null");
+
 		Optional<User> findByEmail = userRepository.findByEmail(customer.getEmail());
 		if (findByEmail.isPresent()) {
-			System.out.println("inside add user method");
-			throw new RuntimeException("Email alredy Register");
+			throw new RuntimeException("Email already registered");
 		}
+
 		User newAdmin = new User();
 		newAdmin.setEmail(customer.getEmail());
 		newAdmin.setPassword(customer.getPassword());
@@ -82,42 +82,70 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(newAdmin);
 	}
 
+	@Override
 	public User changePassword(Integer userId, UserDTO customer) throws UserException {
-		User user = userRepository.findById(userId).orElseThrow(() -> new UserException("User not found"));
-		if (customer.getNewPassword().length() >= 5 && customer.getNewPassword().length() <= 10) {
-			user.updatePassword(customer.getNewPassword(), passwordEncoder);
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new UserException("User not found"));
+
+		if (customer.getPassword().length() >= 5 && customer.getPassword().length() <= 10) {
+			user.updatePassword(customer.getPassword(), passwordEncoder);
 			return userRepository.save(user);
 		} else {
-			throw new UserException("provide valid  password");
+			throw new UserException("Provide a valid password");
 		}
-
 	}
 
-	
+	@Override
+	public User updateUserDetails(Integer userId, UserDTO userDTO) throws UserException {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new UserException("User not found"));
+
+		if (userDTO.getFirstName() != null && !userDTO.getFirstName().isEmpty()) {
+			user.setFirstName(userDTO.getFirstName());
+		}
+		if (userDTO.getLastName() != null && !userDTO.getLastName().isEmpty()) {
+			user.setLastName(userDTO.getLastName());
+		}
+		if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty()) {
+			Optional<User> existingUserWithEmail = userRepository.findByEmail(userDTO.getEmail());
+			if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getId().equals(userId)) {
+				throw new UserException("This email is already used by another account");
+			}
+			user.setEmail(userDTO.getEmail());
+		}
+		if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+			if (userDTO.getPassword().length() < 5 || userDTO.getPassword().length() > 10) {
+				throw new UserException("Password must be between 5 and 10 characters");
+			}
+			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+		}
+
+		return userRepository.save(user);
+	}
+
 	@Override
 	public String deactivateUser(Integer userId) throws UserException {
-		User existingUser = userRepository.findById(userId).orElseThrow(() -> new UserException("User not found"));
+		User existingUser = userRepository.findById(userId)
+				.orElseThrow(() -> new UserException("User not found"));
+
 		existingUser.setUserAccountStatus(UserAccountStatus.DEACTIVETE);
 		userRepository.save(existingUser);
-		return "Account deactivet Succesfully";
+
+		return "Account deactivated successfully";
 	}
 
 	@Override
 	public User getUserDetails(Integer userId) throws UserException {
-		User existingUser = userRepository.findById(userId).orElseThrow(() -> new UserException("User not found"));
-		return existingUser;
+		return userRepository.findById(userId)
+				.orElseThrow(() -> new UserException("User not found"));
 	}
 
 	@Override
 	public List<User> getAllUserDetails() throws UserException {
-
-		List<User> existingAllUser = userRepository.findAll();
-		if (existingAllUser.isEmpty()) {
-			new UserException("User list is Empty");
+		List<User> users = userRepository.findAll();
+		if (users.isEmpty()) {
+			throw new UserException("User list is empty");
 		}
-		return existingAllUser;
+		return users;
 	}
-
-	
-
 }

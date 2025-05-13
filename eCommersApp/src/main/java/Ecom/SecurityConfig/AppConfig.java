@@ -36,7 +36,7 @@ public class AppConfig {
                             cfg.setAllowedOriginPatterns(Collections.singletonList("https://eccomers96.netlify.app/"));
                             cfg.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
                             cfg.setAllowedMethods(Collections.singletonList("*"));
-        
+
                             cfg.setAllowCredentials(true);
                             cfg.setAllowedHeaders(Collections.singletonList("*"));
                             cfg.setExposedHeaders(Arrays.asList("Authorization"));
@@ -53,11 +53,15 @@ public class AppConfig {
                             .requestMatchers(HttpMethod.DELETE, "/ecom/orders/users/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/ecom/signIn", "/ecom/product-reviews/**","/ecom/products/**").permitAll()
 
+                            // ✅ Permettre temporairement PUT & DELETE pour produits (test sans rôle)
+                            .requestMatchers(HttpMethod.PUT, "/ecom/products/**").permitAll()
+                            .requestMatchers(HttpMethod.DELETE, "/ecom/products/**").permitAll()
+
+                            // 🔒 Sécurité habituelle (ne pas supprimer)
                             .requestMatchers(
                                     HttpMethod.POST,
                                     "/ecom/product/**",
                                     "/ecom/order-shippers/**"
-
                             ).hasRole("ADMIN")
                             .requestMatchers(
                                     HttpMethod.POST,
@@ -72,7 +76,6 @@ public class AppConfig {
                                     HttpMethod.PUT,
                                     "/ecom/admin/**",
                                     "/ecom/products/**"
-
                             ).hasRole("ADMIN")
                             .requestMatchers(
                                     HttpMethod.PUT,
@@ -80,7 +83,6 @@ public class AppConfig {
                                     "/ecom/product-reviews/**",
                                     "/ecom/customer-addresses/update/**",
                                     "/ecom/cart/**", "/ecom/order-shipping/**"
-
                             ).hasRole("USER")
 
                             .requestMatchers(
@@ -88,26 +90,21 @@ public class AppConfig {
                                     "/ecom/products/**",
                                     "/ecom/product-reviews/**",
                                     "/ecom/customer-addresses/delete/**",
-//                                    "/ecom/orders/users/**",
                                     "/ecom/order-shipping/**",
                                     "/ecom/order-shippers/**"
-
                             ).hasRole("ADMIN")
                             .requestMatchers(
                                     HttpMethod.DELETE,
                                     "/ecom/cart/remove-product/**"
-//                                    "/ecom/orders/users/**"
                             ).hasRole("USER")
 
                             .requestMatchers(
                                     HttpMethod.GET,
-
                                     "/ecom/customer-addresses/**",
                                     "/ecom/cart/products/**",
                                     "/ecom/orders/**",
                                     "/ecom/order-shippers",
                                     "/ecom/order-payments/**"
-
                             ).hasAnyRole("ADMIN", "USER")
 
                             .requestMatchers("/swagger-ui*/**", "/v3/api-docs/**").permitAll()
@@ -119,15 +116,10 @@ public class AppConfig {
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
-
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-
     }
-
-
 }
-

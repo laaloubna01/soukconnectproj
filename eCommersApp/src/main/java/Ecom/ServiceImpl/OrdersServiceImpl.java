@@ -71,7 +71,8 @@ public class OrdersServiceImpl implements OrdersService {
 
                 orderItem.setQuantity(itemDTO.getQuantity());
                 orderItem.setProduct(itemDTO.getProduct());
-                orderItem.setOrderId(newOrder.getOrderId());
+                orderItem.setOrder(newOrder); // ✅
+
                 orderItems.add(orderItem);
                 System.out.println("inside the loop and if");
             }

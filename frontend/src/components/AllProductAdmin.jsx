@@ -9,7 +9,7 @@ const AllProductAdmin = () => {
   const { productId } = useParams();
   const [products, setProducts] = useState([]);
   const [deleted, setDeleted] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false); 
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const updateProduct = (productIdToUpdate) => {
@@ -24,7 +24,7 @@ const AllProductAdmin = () => {
     setSelectedProduct(null);
     setShowUpdateModal(false);
   };
-  
+
   const handleUpdate = (updatedProduct) => {//sending function as a props to the updateproduct form
     api
       .put(`/ecom/products/update/${updatedProduct.productId}`, updatedProduct)
@@ -103,7 +103,7 @@ const AllProductAdmin = () => {
                   : product.description}
               </p>
 
-              <h2 className="product-price1">Price: ₹ {product.price}</h2>
+              <h2 className="product-price1">Price: MAD {product.price}</h2>
               <div className="button-container1">
                 <button onClick={() => updateProduct(product.productId)}>
                   update
@@ -115,7 +115,7 @@ const AllProductAdmin = () => {
             </div>
           </div>
         ))}
-      </div> 
+      </div>
     </>
   );
 };

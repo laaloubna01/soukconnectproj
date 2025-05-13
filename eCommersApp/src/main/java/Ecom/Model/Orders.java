@@ -2,7 +2,6 @@ package Ecom.Model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,24 +39,20 @@ public class Orders {
     @Column(name = "order_date")
     private LocalDateTime orderDate;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     private double totalAmount;
 
-    @OneToMany( cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<OrderItem> orderItem= new ArrayList<>();
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<OrderItem> orderItem = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name="Payment_id")
+    @JoinColumn(name = "Payment_id")
     private Payment payment;
 
-
     @OneToOne
-    @JoinColumn(name="ShippingDetails_id")
+    @JoinColumn(name = "ShippingDetails_id")
     private ShippingDetails shippingDetails;
-
-
 }

@@ -48,7 +48,7 @@ const SingleProduct = () => {
           <h2>{product.name}</h2>
           <p>Category: {product.category}</p>
           <p>Description: {product.description}</p>
-          <p>Price: ₹ {product.price}</p>
+          <p>Price: MAD {product.price}</p>
 
           <div>
             <button
