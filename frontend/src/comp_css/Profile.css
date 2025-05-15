@@ -1,58 +1,113 @@
+/* comp_css/Profile.css */
+
+.profile-wrapper {
+  background-color: #fff;
+  padding: 40px 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.main-title {
+  text-align: center;
+  color: #c62828;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
 .profile-container {
-  width: 70%;
   display: flex;
-  background-color: white;
-  padding: 20px;
-  border: 1px solid #d12020;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  background-color: #fff;
+  border: 2px solid #c62828;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  margin-bottom: 30px;
+  gap: 30px;
+}
 
-  margin: 40px;
+.profile-details,
+.latest-address {
+  flex: 1;
+  min-width: 300px;
+}
 
+.profile-header,
+.latest-address-header {
+  font-size: 22px;
+  color: #c62828;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+}
 
+.profile-details p,
+.latest-address p {
+  font-size: 16px;
+  color: #444;
+  margin: 8px 0;
+}
+
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: 0.3s ease;
+}
+
+.btn.red {
+  background-color: #c62828;
+  color: white;
+}
+
+.btn.red:hover {
+  background-color: #a01919;
+}
+
+.btn.gray {
+  background-color: #eee;
+  color: #333;
+}
+
+.btn.gray:hover {
+  background-color: #ddd;
 }
 
 .updatePassword {
-  width: 30%;
-  margin: 40px;
-  border: 2px solid rgb(223, 220, 220);
-  padding: 20px;
-  border-radius: 5px;
-  
+  background: #fff;
+  border: 2px solid #f1f1f1;
+  padding: 25px;
+  max-width: 400px;
+  margin: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-
-.profile-details {
-  flex: 1;
-  padding-right: 20px;
-}
-
-.profile-header {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.profile-details p {
-  font-size: 18px;
-  color: #666;
-  margin: 10px 0;
-}
-
-.latest-address {
-  flex: 1;
-  border-left: 1px solid #ccc;
-  padding-left: 20px;
-}
-
-.latest-address-header {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.latest-address p {
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   font-size: 16px;
-  color: #666;
-  margin: 5px 0;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+  }
+
+  .updatePassword {
+    width: 100%;
+  }
 }

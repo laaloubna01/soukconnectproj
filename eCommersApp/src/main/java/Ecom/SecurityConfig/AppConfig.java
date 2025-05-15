@@ -48,6 +48,9 @@ public class AppConfig {
                 })
                 .authorizeHttpRequests(auth -> {
                     auth
+                            // Chatbot endpoints at the top
+                            .requestMatchers(HttpMethod.GET, "/api/chatbot/test").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/chatbot").permitAll()
                             .requestMatchers(HttpMethod.POST, "/ecom/admin").permitAll()
                             .requestMatchers(HttpMethod.POST, "/ecom/customers").permitAll()
                             .requestMatchers(HttpMethod.DELETE, "/ecom/orders/users/**").permitAll()
@@ -109,6 +112,7 @@ public class AppConfig {
 
                             .requestMatchers("/swagger-ui*/**", "/v3/api-docs/**").permitAll()
                             .anyRequest().authenticated();
+
                 })
                 .csrf(csrf -> csrf.disable())
                 .addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)

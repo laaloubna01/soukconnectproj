@@ -5,207 +5,141 @@ import Address from "../components/Address";
 import UpdateAddress from "../components/UpdateAddress";
 
 const userid = localStorage.getItem("userid");
-const passData={
-  newpass:""
-}
-
-
 
 const Profile = () => {
-  const [profileData, setProfileData] = useState(null);
-  const [add, setAdd] = useState(null);
-  const [addressModal, setAddressModal] = useState(false);
-  const [updateaddressModal, setUpdateAddressModal] = useState(false);
-  const [showPassSection, setShowPassSection] = useState(false);
-  const [passform, setNewPassword1] = useState("");
-  const [error, setError] = useState(null);
+    const [profileData, setProfileData] = useState(null);
+    const [add, setAdd] = useState(null);
+    const [addressModal, setAddressModal] = useState(false);
+    const [updateaddressModal, setUpdateAddressModal] = useState(false);
+    const [showPassSection, setShowPassSection] = useState(false);
+    const [passform, setNewPassword1] = useState({ newpass: "" });
+    const [error, setError] = useState(null);
 
-  const handleChange = (e) => {
-    const val = e.target.value;
-    setNewPassword1({ ...passform, [e.target.name]: val });
-  };
+    const handleChange = (e) => {
+        const val = e.target.value;
+        setNewPassword1({ ...passform, [e.target.name]: val });
+    };
 
-  const handleSubmit = (e) => {
-    
-    e.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        api
+            .put(`/ecom/customers/update-password/${userid}`, passform)
+            .then((response) => {
+                alert("Mot de passe mis à jour avec succès !");
+                setShowPassSection(false);
+            })
+            .catch((error) => {
+                alert("Erreur lors de la mise à jour du mot de passe.");
+            });
+    };
 
-    api
-      .put(`/ecom/customers/update-password/${userid}`, passform)
-      .then((response) => {
-        alert("Password updated successfully");
-        setShowPassSection(false);
-      })
-      .catch((error) => {
-        alert("Error occures Try letter....")
-      });
-  };
-  const changePassword = () => {
-    setShowPassSection(true);
-  };
+    const changePassword = () => {
+        setShowPassSection(true);
+    };
 
-  const handlerUpdateAddress = (latestAddress) => {
-    setAdd(latestAddress);
-    setUpdateAddressModal(true);
-  };
+    const handlerUpdateAddress = (latestAddress) => {
+        setAdd(latestAddress);
+        setUpdateAddressModal(true);
+    };
 
-  const showUpdateAddAddressModal = () => {
-    setUpdateAddressModal(false);
-  };
-  const showAddAddressModal = () => {
-    setAddressModal(false);
-  };
-  const handlerAddAddress = (userid) => {
-    setAddressModal(true);
-    console.log("called...... show");
-  };
+    const showAddAddressModal = () => setAddressModal(false);
+    const handlerAddAddress = () => setAddressModal(true);
 
-  useEffect(() => {
-    api
-      .get(`/ecom/customers/${userid}`)
-      .then((response) => {
-        setProfileData(response.data);
-        setAddressModal(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data from the API: ", error);
-      });
-  }, [userid]);
+    useEffect(() => {
+        api
+            .get(`/ecom/customers/${userid}`)
+            .then((response) => {
+                setProfileData(response.data);
+                setAddressModal(false);
+            })
+            .catch((error) => {
+                console.error("Erreur API: ", error);
+            });
+    }, [userid]);
 
+    const { newpass } = passform;
+    const latestAddress = profileData?.address?.length
+        ? profileData.address[profileData.address.length - 1]
+        : null;
 
-  const {newpass}=passform;
-  const latestAddress = profileData?.address?.length
-    ? profileData.address[profileData.address.length - 1]
-    : null;
+    return (
+        <div className="profile-wrapper">
+            <h2 className="main-title">🧑‍💼 Mon Profil</h2>
 
-  return (
-    <>
-      <h2
-        style={{
-          color: "green",
-          textAlign: "center",
-          margin: "20px",
-        }}
-      >
-        Profile Section
-      </h2>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-        }}
-      >
-        <div className="profile-container">
-          {addressModal && <Address onclose={showAddAddressModal} />}
-          {updateaddressModal && (
-            <UpdateAddress address={add} onclose={showAddAddressModal} />
-          )}
+            <div className="profile-container">
+                {addressModal && <Address onclose={showAddAddressModal} />}
+                {updateaddressModal && (
+                    <UpdateAddress address={add} onclose={showAddAddressModal} />
+                )}
 
-          <div className="profile-details">
-            <h1 className="profile-header">Profile Details</h1>
+                <div className="profile-details">
+                    <h1 className="profile-header">Détails du Profil</h1>
+                    {profileData ? (
+                        <>
+                            <p><strong>Statut:</strong> {profileData.userAccountStatus}</p>
+                            <p><strong>Nom:</strong> {profileData.firstName} {profileData.lastName}</p>
+                            <p><strong>Email:</strong> {profileData.email}</p>
+                            <p><strong>Téléphone:</strong> {profileData.phoneNumber}</p>
+                            <p><strong>Inscrit le:</strong> {profileData.registerTime.substring(0, 10)}</p>
+                        </>
+                    ) : (
+                        <p>Chargement des données...</p>
+                    )}
+                </div>
 
-            {profileData ? (
-              <>
-                <p style={{ color: "green" }}>
-                  <strong>Account Status:</strong>{" "}
-                  {profileData.userAccountStatus}
-                </p>
-                <p>
-                  <strong>Name:</strong> {profileData.firstName}{" "}
-                  {profileData.lastName}
-                </p>
-                <p>
-                  <strong>Email:</strong> {profileData.email}
-                </p>
+                <div className="latest-address">
+                    {latestAddress ? (
+                        <>
+                            <h2 className="latest-address-header">📍 Adresse Actuelle</h2>
+                            <p><strong>Bâtiment:</strong> {latestAddress.flatNo}</p>
+                            <p><strong>Rue:</strong> {latestAddress.street}</p>
+                            <p><strong>Ville:</strong> {latestAddress.city}</p>
+                            <p><strong>État:</strong> {latestAddress.state}</p>
+                            <p><strong>Code Postal:</strong> {latestAddress.zipCode}</p>
+                            <button className="btn red" onClick={() => handlerUpdateAddress(latestAddress)}>
+                                Mettre à jour l'adresse
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <h2>❌ Aucune adresse enregistrée</h2>
+                            <button className="btn red" onClick={handlerAddAddress}>
+                                Ajouter une adresse
+                            </button>
+                        </>
+                    )}
+                </div>
+            </div>
 
-                <p>
-                  <strong>Phone Number:</strong> {profileData.phoneNumber}
-                </p>
-                <p>
-                  <strong>Registration :</strong>{" "}
-                  {profileData.registerTime.substring(0, 10)}
-                </p>
-              </>
-            ) : (
-              <p>Loading profile data...</p>
-            )}
-          </div>
-          <div className="latest-address">
-            {latestAddress ? (
-              <>
-                <h2 className="latest-address-header">Latest Address</h2>
-                <p>
-                  <strong>Buiding :</strong> {latestAddress.flatNo}
-                </p>
-                <p>
-                  <strong>Street:</strong> {latestAddress.street}
-                </p>
-                <p>
-                  <strong>City:</strong> {latestAddress.city}
-                </p>
-                <p>
-                  <strong>State:</strong> {latestAddress.state}
-                </p>
-                <p>
-                  <strong>Zip Code:</strong> {latestAddress.zipCode}
-                </p>
-
-                <button
-                  onClick={() => {
-                    handlerUpdateAddress(latestAddress);
-                  }}
-                >
-                  Update Address
-                </button>
-              </>
-            ) : (
-              <>
-                <h2>Address Not updated</h2>
-                <button
-                  onClick={() => {
-                    handlerAddAddress();
-                  }}
-                >
-                  Add Address
-                </button>
-              </>
-            )}
-          </div>
+            <div className="updatePassword">
+                {showPassSection ? (
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="newpass">Nouveau mot de passe :</label>
+                        <input
+                            type="password"
+                            name="newpass"
+                            value={newpass}
+                            onChange={handleChange}
+                            placeholder="••••••••••"
+                        />
+                        {error && <p className="error">{error}</p>}
+                        <button type="submit" className="btn red">Valider</button>
+                        <button
+                            type="button"
+                            className="btn gray"
+                            onClick={() => setShowPassSection(false)}
+                        >
+                            Annuler
+                        </button>
+                    </form>
+                ) : (
+                    <button className="btn red" onClick={changePassword}>
+                        🔐 Modifier le mot de passe
+                    </button>
+                )}
+            </div>
         </div>
-        <div className="updatePassword">
-          {showPassSection ? (
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="newPassword">New Password:</label>
-              <input
-                type="password"
-                name="newPassword"
-                value={newpass}
-                onChange={handleChange}
-              />
-              {error && <p className="error">{error}</p>}
-              <button type="submit">Update Password</button>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowPassSection(false);
-                }}
-              >
-                Cancel update
-              </button>
-            </form>
-          ) : (
-            <button
-              onClick={() => {
-                changePassword();
-              }}
-            >
-              ChangePassword
-            </button>
-          )}
-        </div>
-      </div>
-    </>
-  );
+    );
 };
 
 export default Profile;

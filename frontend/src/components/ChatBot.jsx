@@ -4,14 +4,54 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const ChatBot = () => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([
+        { sender: "bot", text: "Bonjour ! Comment puis-je vous aider ? Posez-moi des questions sur nos produits." }
+    ]);
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
+    const [backendOnline, setBackendOnline] = useState(true);
     const messagesEndRef = useRef(null);
+    const BACKEND_URL = "http://localhost:8080";
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    // Check if the backend is available
+    useEffect(() => {
+        const checkBackendStatus = async () => {
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/chatbot/test`, { timeout: 5000 });
+                if (response.status === 200) {
+                    setBackendOnline(true);
+                }
+            } catch (error) {
+                console.warn("Backend not reachable:", error);
+                setBackendOnline(false);
+            }
+        };
+
+        checkBackendStatus();
+    }, []);
+
+    // Simple client-side response when backend is unavailable
+    const getLocalResponse = (userQuery) => {
+        const query = userQuery.toLowerCase();
+
+        if (query.includes("bonjour") || query.includes("salut") || query.includes("hello")) {
+            return "Bonjour ! Comment puis-je vous aider aujourd'hui ?";
+        }
+
+        if (query.includes("merci")) {
+            return "De rien ! C'est un plaisir de vous aider.";
+        }
+
+        if (query.includes("produits") || query.includes("vendez") || query.includes("offrez")) {
+            return "Nous offrons divers produits marocains traditionnels. Normalement, je pourrais vous donner plus de détails, mais notre système est temporairement en maintenance.";
+        }
+
+        return "Je suis désolé, le service est actuellement en maintenance. Veuillez réessayer plus tard.";
+    };
 
     const sendMessage = async () => {
         const trimmedInput = input.trim();
@@ -23,25 +63,45 @@ const ChatBot = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post("http://localhost:8080/api/chatbot", {
+            if (!backendOnline) {
+                // Simulate API call if backend is down
+                setTimeout(() => {
+                    const fallbackResponse = getLocalResponse(trimmedInput);
+                    const botReply = { sender: "bot", text: fallbackResponse };
+                    setMessages((prev) => [...prev, botReply]);
+                    setLoading(false);
+                }, 1000);
+                return;
+            }
+
+            // Call the actual backend API
+            const response = await axios.post(`${BACKEND_URL}/api/chatbot`, {
                 message: trimmedInput,
             }, {
-                timeout: 10000
+                timeout: 15000  // Increased timeout for AI processing
             });
 
             const botReply = {
                 sender: "bot",
-                text: response.data || "Je n'ai pas pu comprendre votre demande.",
+                text: response.data || "Je n'ai pas pu comprendre votre demande."
             };
             setMessages((prev) => [...prev, botReply]);
+            setBackendOnline(true);
         } catch (error) {
             console.error("Erreur lors de l'appel au chatbot :", error);
+
+            // Set backend status to offline
+            setBackendOnline(false);
+
+            // Get a local fallback response
+            const fallbackResponse = "Désolé, le service est temporairement indisponible. Vous pouvez essayer une question simple.";
+
             setMessages((prev) => [
                 ...prev,
                 {
                     sender: "bot",
-                    text: "Désolé, le service est temporairement indisponible.",
-                },
+                    text: fallbackResponse
+                }
             ]);
         } finally {
             setLoading(false);
@@ -58,6 +118,11 @@ const ChatBot = () => {
         <div className="chatbot-container">
             <div className="chatbot-header">
                 <h3>Assistant Virtuel SoukConnect</h3>
+                {!backendOnline && (
+                    <div className="status-indicator offline">
+                        Service limité - Mode hors ligne
+                    </div>
+                )}
             </div>
             <div className="chatbot-body">
                 <div className="messages-container">
@@ -87,7 +152,7 @@ const ChatBot = () => {
                     <FontAwesomeIcon icon={faPaperPlane} />
                 </button>
             </div>
-            <style jsx>{`
+            <style>{`
                 .chatbot-container {
                     width: 100%;
                     max-width: 400px;
@@ -107,6 +172,21 @@ const ChatBot = () => {
                     padding: 1rem;
                     border-top-left-radius: 10px;
                     border-top-right-radius: 10px;
+                    position: relative;
+                }
+
+                .status-indicator {
+                    font-size: 0.75rem;
+                    padding: 2px 8px;
+                    border-radius: 10px;
+                    position: absolute;
+                    bottom: 5px;
+                    right: 10px;
+                }
+
+                .status-indicator.offline {
+                    background-color: #ffcccc;
+                    color: #990000;
                 }
 
                 .chatbot-body {

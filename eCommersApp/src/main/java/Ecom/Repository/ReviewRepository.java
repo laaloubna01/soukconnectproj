@@ -1,6 +1,7 @@
 package Ecom.Repository;
 
 import java.util.List;
+import Ecom.Model.Product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +15,8 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	
 	@Query("SELECT r FROM Review r WHERE r.product.productId = :productId")
 	List<Review> findAllReviewsByProductId(@Param("productId") Integer productId);
+
+	@Query("SELECT r FROM Review r WHERE r.product = :product")
+	List<Review> findByProduct(@Param("product") Product product);
 
 }

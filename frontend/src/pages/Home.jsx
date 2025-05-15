@@ -1,10 +1,8 @@
-import React from 'react';
 import { Container, Row, Col, Card, Carousel, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './HomePage.css';
-
 
 const HomePage = () => {
     const navigate = useNavigate();

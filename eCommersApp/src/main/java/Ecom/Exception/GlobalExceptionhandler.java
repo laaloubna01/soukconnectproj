@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.HttpClientErrorException;
 
 @ControllerAdvice
 public class GlobalExceptionhandler {
@@ -145,16 +147,32 @@ public class GlobalExceptionhandler {
 
 	}
 
+//	@ExceptionHandler(Exception.class)
+//	public ResponseEntity<MyErrorClass> getException(Exception e, WebRequest req) {
+//
+//		MyErrorClass e1 = new MyErrorClass();
+//		e1.setMessage(e.getMessage());
+//		e1.setLocalDateTimes(LocalDateTime.now());
+//		e1.setDesc(req.getDescription(false));
+//
+//		return new ResponseEntity<MyErrorClass>(e1, HttpStatus.BAD_GATEWAY);
+//
+//	}
+
+
+	@ExceptionHandler(ResourceAccessException.class)
+	public ResponseEntity<String> handleResourceAccessException(ResourceAccessException ex) {
+		return new ResponseEntity<>("Service externe inaccessible. Veuillez réessayer plus tard.", HttpStatus.SERVICE_UNAVAILABLE);
+	}
+
+	@ExceptionHandler(HttpClientErrorException.class)
+	public ResponseEntity<String> handleHttpClientErrorException(HttpClientErrorException ex) {
+		return new ResponseEntity<>("Erreur lors de la communication avec le service IA: " + ex.getMessage(), HttpStatus.BAD_GATEWAY);
+	}
+
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<MyErrorClass> getException(Exception e, WebRequest req) {
-
-		MyErrorClass e1 = new MyErrorClass();
-		e1.setMessage(e.getMessage());
-		e1.setLocalDateTimes(LocalDateTime.now());
-		e1.setDesc(req.getDescription(false));
-
-		return new ResponseEntity<MyErrorClass>(e1, HttpStatus.BAD_GATEWAY);
-
+	public ResponseEntity<String> handleGenericException(Exception ex) {
+		return new ResponseEntity<>("Une erreur inattendue s'est produite: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

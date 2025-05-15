@@ -32,7 +32,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	// Recherche avec tri dynamique
 	List<Product> findAllByNameContainingIgnoreCase(String keyword, Sort sort);
 
-
+	List<Product> findByNameContainingIgnoreCase(String name);
+	List<Product> findByCategory(String category);
 
 }
 
