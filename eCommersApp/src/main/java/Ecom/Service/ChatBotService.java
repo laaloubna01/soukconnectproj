@@ -136,6 +136,8 @@ public class ChatBotService {
             String keyPrefix = openRouterApiKey.substring(0, Math.min(5, openRouterApiKey.length()));
             logger.info("Using OpenRouter API key starting with: {}...", keyPrefix);
 
+            logger.info("OpenRouter API Key: {}", openRouterApiKey);
+
             // Prepare AI request with context and improved prompt
             String systemPrompt = """
         You are SoukBot, the helpful virtual assistant for SoukConnect, a Moroccan e-commerce platform. Your role is to provide excellent customer service by answering questions about our products and making personalized recommendations.
