@@ -9,6 +9,7 @@ import Login from "../pages/LogIn";
 import AdminLogin from "../pages/AdminLogIn";
 import Registration from "../pages/Registration";
 import SingleProduct from "../pages/SingleProduct";
+
 import Cart from "../pages/Cart";
 import ShippingDetails from "../pages/ShippingDetails";
 import { Routes, Route } from "react-router-dom";
@@ -16,6 +17,7 @@ import { Privateroute,Privaterouteadmin } from "../Router/ProtectedRoute";
 import Admin from "../pages/Admin";
 import NotFound from "../components/NotFound";
 import ChatBot from "../components/ChatBot";
+import AboutUsPage from "../pages/AboutUsPage";
 
 const AllRoutes = () => {
   return (
@@ -25,6 +27,7 @@ const AllRoutes = () => {
         <Route path="/product" element={<Product />} />
         <Route path="/login" element={<Login />} />
         <Route path="/chatbot" element={<ChatBot />} />
+        <Route path="/aboutUsPage" element={<AboutUsPage />} />
 
         <Route path="/user" element={<Privateroute />}>
           <Route path="cart" element={<Cart />} />

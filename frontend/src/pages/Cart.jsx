@@ -61,19 +61,6 @@ const Cart = () => {
             .catch(() => alert("Erreur lors de la suppression."));
     };
 
-    const increaseQuantity = (productId) => {
-        api
-            .put(`/ecom/cart/increase-productQty/${cartId}/${productId}`)
-            .then(() => fetchCartData());
-    };
-
-    const decreaseQuantity = (productId) => {
-        api
-            .put(`/ecom/cart/decrease-productQty/${cartId}/${productId}`)
-            .then(() => fetchCartData())
-            .catch(() => alert("Quantité minimale atteinte."));
-    };
-
     return (
         <div className="cart-container">
             <h2 className="cart-header">Mon Panier</h2>
@@ -89,11 +76,7 @@ const Cart = () => {
                                     <p className="item-cat">{item.product.category}</p>
                                     <p className="item-desc">{item.product.description}</p>
                                     <p className="item-price">MAD {item.product.price}</p>
-                                    <div className="quantity-control">
-                                        <button onClick={() => decreaseQuantity(item.product.productId)}>-</button>
-                                        <span>{item.quantity}</span>
-                                        <button onClick={() => increaseQuantity(item.product.productId)}>+</button>
-                                    </div>
+                                    <p><strong>Quantité :</strong> {item.quantity}</p>
                                     <button className="btn-remove" onClick={() => removeProductFromCart(item.product.productId)}>
                                         Supprimer
                                     </button>

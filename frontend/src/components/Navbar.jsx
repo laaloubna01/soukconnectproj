@@ -6,21 +6,18 @@ import {
     faSearch,
     faUser,
     faRobot,
+    faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
     const navigate = useNavigate();
     const userId = localStorage.getItem("userid");
     const name = localStorage.getItem("name");
-    const [expanded, setExpanded] = React.useState(false);
 
     const handleLoginClick = () => navigate("/login");
     const handleLogoutClick = () => {
-        localStorage.removeItem("userid");
-        localStorage.removeItem("jwtToken");
-        localStorage.removeItem("cartid");
-        localStorage.removeItem("name");
-        alert("Logout Successfully.....");
+        localStorage.clear();
+        alert("Déconnexion réussie !");
         navigate("/");
     };
 
@@ -29,97 +26,84 @@ const Navbar = () => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
+      padding: 0.8rem 2rem;
       background-color: #9a1f1a;
       color: white;
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       position: sticky;
       top: 0;
       z-index: 1000;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      flex-wrap: wrap;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
     }
 
     .navbar-brand {
+      font-weight: 700;
+      font-size: 1.6rem;
+      text-decoration: none;
+      color: white;
       display: flex;
       align-items: center;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: white;
-      text-decoration: none;
-      transition: transform 0.3s;
-    }
-
-    .navbar-brand:hover {
-      transform: scale(1.03);
-    }
-
-    .navbar-brand i {
-      font-size: 1.8rem;
-      margin-right: 0.5rem;
+      gap: 0.5rem;
     }
 
     .search-container {
       position: relative;
-      width: 40%;
-      min-width: 250px;
+      width: 380px;
     }
 
     .search-container input {
       width: 100%;
-      padding: 0.6rem 1.2rem;
-      padding-right: 2.8rem;
-      border-radius: 25px;
+      padding: 0.6rem 1rem;
+      border-radius: 50px;
       border: none;
       font-size: 0.95rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    .search-icon {
+    .search-container .search-icon {
       position: absolute;
-      right: 20px;
+      right: 15px;
       top: 50%;
       transform: translateY(-50%);
       color: #9a1f1a;
+      font-size: 1.1rem;
       cursor: pointer;
     }
 
-    .nav-actions {
+    .navbar-right {
       display: flex;
       align-items: center;
       gap: 1.2rem;
     }
 
-    .nav-action-item {
+    .nav-item {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
       cursor: pointer;
-      color: white;
-      padding: 0.6rem 1rem;
-      border-radius: 6px;
-      transition: all 0.3s;
       font-weight: 500;
+      color: white;
     }
 
-    .nav-action-item:hover {
-      background-color: rgba(255, 255, 255, 0.15);
+    .nav-item:hover {
+      text-decoration: underline;
     }
 
     .nav-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
+      padding: 0.4rem 0.9rem;
+      border-radius: 5px;
+      font-weight: 600;
       border: none;
       cursor: pointer;
-      transition: all 0.3s;
-      font-weight: 600;
-      font-size: 0.9rem;
     }
 
     .login-btn {
-      background-color: transparent;
+      background: transparent;
       color: white;
       border: 1.5px solid white;
     }
@@ -130,39 +114,27 @@ const Navbar = () => {
     }
 
     .logout-btn {
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
-      border: 1.5px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .login-btn:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .signup-btn:hover {
-      background-color: #f0f0f0;
-    }
-
-    .logout-btn:hover {
       background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
-    @media (max-width: 992px) {
+    @media (max-width: 768px) {
       .navbar-custom {
         flex-direction: column;
-        padding: 1rem;
-        gap: 1rem;
+        align-items: flex-start;
       }
-      
+
+      .navbar-left, .navbar-right {
+        width: 100%;
+        margin-top: 0.5rem;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
       .search-container {
         width: 100%;
-        order: 3;
-        margin-top: 1rem;
-      }
-      
-      .nav-actions {
-        width: 100%;
-        justify-content: space-between;
+        margin-top: 0.5rem;
       }
     }
   `;
@@ -171,70 +143,53 @@ const Navbar = () => {
         <>
             <style>{styles}</style>
             <nav className="navbar-custom">
-                <Link
-                    className="navbar-brand"
-                    to="/"
-                    onClick={() => setExpanded(false)}
-                >
-                    <i className="bi bi-shop"></i>
-                    SoukConnect
-                </Link>
+                <div className="navbar-left">
+                    <Link className="navbar-brand" to="/">
+                        <i className="bi bi-shop"></i> SoukConnect
+                    </Link>
 
-                <div className="search-container">
-                    <input
-                        type="text"
-                        placeholder="Rechercher des produits..."
-                        onClick={() => navigate("/product")}
-                    />
-                    <FontAwesomeIcon icon={faSearch} className="search-icon" />
+                    <div className="search-container">
+                        <input
+                            type="text"
+                            placeholder="Rechercher des produits..."
+                            onClick={() => navigate("/product")}
+                        />
+                        <FontAwesomeIcon icon={faSearch} className="search-icon" />
+                    </div>
                 </div>
 
-                <div className="nav-actions">
-                    <div
-                        className="nav-action-item"
-                        onClick={() => navigate("/user/cart")}
-                    >
-                        <FontAwesomeIcon icon={faCartShopping} />
-                        <span>Panier</span>
+                <div className="navbar-right">
+                    <div className="nav-item" onClick={() => navigate("/aboutUsPage")}>
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                        <span>About Us</span>
                     </div>
 
-                    <div
-                        className="nav-action-item"
-                        onClick={() => navigate("/chatbot")}
-                    >
+                    <div className="nav-item" onClick={() => navigate("/chatbot")}>
                         <FontAwesomeIcon icon={faRobot} />
                         <span>Assistant</span>
                     </div>
 
+                    <div className="nav-item" onClick={() => navigate("/user/cart")}>
+                        <FontAwesomeIcon icon={faCartShopping} />
+                        <span>Panier</span>
+                    </div>
+
                     {userId ? (
                         <>
-                            <div
-                                className="nav-action-item"
-                                onClick={() => navigate("/user/order-details")}
-                            >
+                            <div className="nav-item" onClick={() => navigate("/user/order-details")}>
                                 <FontAwesomeIcon icon={faUser} />
                                 <span>{name}</span>
                             </div>
-                            <button
-                                className="nav-btn logout-btn"
-                                onClick={handleLogoutClick}
-                            >
+                            <button className="nav-btn logout-btn" onClick={handleLogoutClick}>
                                 Déconnexion
                             </button>
                         </>
                     ) : (
                         <>
-                            <button
-                                className="nav-btn login-btn"
-                                onClick={handleLoginClick}
-                            >
-                                <FontAwesomeIcon icon={faUser} />
-                                <span>Connexion</span>
+                            <button className="nav-btn login-btn" onClick={handleLoginClick}>
+                                <FontAwesomeIcon icon={faUser} /> Connexion
                             </button>
-                            <button
-                                className="nav-btn signup-btn"
-                                onClick={() => navigate("/register-user")}
-                            >
+                            <button className="nav-btn signup-btn" onClick={() => navigate("/register-user")}>
                                 Inscription
                             </button>
                         </>

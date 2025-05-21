@@ -68,7 +68,10 @@ const Product = () => {
         <aside className="filter-panel">
           <h3>Filters</h3>
           <label>Category</label>
-          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+          <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+          >
             <option value="All">All</option>
             <option value="Accessoires">Accessoires</option>
             <option value="Artisanat">Artisanat</option>
@@ -78,7 +81,10 @@ const Product = () => {
           </select>
 
           <label>Price</label>
-          <select value={priceOrder} onChange={(e) => setPriceOrder(e.target.value)}>
+          <select
+              value={priceOrder}
+              onChange={(e) => setPriceOrder(e.target.value)}
+          >
             <option value="All">All</option>
             <option value="LowToHigh">Low to High</option>
             <option value="HighToLow">High to Low</option>
@@ -99,18 +105,26 @@ const Product = () => {
           ) : (
               filteredProducts.map((product) => (
                   <div className="product-card" key={product.productId}>
-                    <img className="product-img" src={product.imageUrl} alt={product.name} />
+                    <img
+                        className="product-img"
+                        src={product.imageUrl}
+                        alt={product.name}
+                    />
                     <div className="product-details">
                       <h4>{product.name}</h4>
                       <p className="product-category">{product.category}</p>
-                      <p className="product-desc">{product.description.slice(0, 40)}...</p>
-                      <p className="product-price">MAD {product.price}</p>
-                      <p className="product-rating">
-                        Rating: {product.reviews.length > 0 ? product.reviews[0].rating : "N/A"}
+                      <p className="product-desc">
+                        {product.description.slice(0, 40)}...
                       </p>
+                      <p className="product-price">MAD {product.price}</p>
+
                       <div className="btn-group">
-                        <button onClick={() => addProductToCart(product.productId)}>Add to Cart</button>
-                        <Link to={`/product/${product.productId}`} className="view-link">View</Link>
+                        <button onClick={() => addProductToCart(product.productId)}>
+                          Add to Cart
+                        </button>
+                        <Link to={`/product/${product.productId}`} className="view-link">
+                          View
+                        </Link>
                       </div>
                     </div>
                   </div>

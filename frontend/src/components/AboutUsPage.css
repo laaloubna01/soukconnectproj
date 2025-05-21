@@ -1,0 +1,268 @@
+/* src/pages/AboutUsPage.css */
+.about-us-page {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+/* Hero Section */
+.hero-section {
+    background-color: #f9f3f0;
+    padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(198, 40, 40, 0.1) 0%, rgba(255, 255, 255, 0) 50%);
+    z-index: 0;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title span {
+    color: #c62828;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.moroccan-flag-container {
+    margin: 2rem 0;
+    position: relative;
+    z-index: 1;
+}
+
+.moroccan-flag {
+    max-width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero-image {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 3px solid #c62828;
+}
+
+/* Sections communes */
+.section-title {
+    color: #c62828;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    font-weight: 700;
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 4px;
+    background-color: #c62828;
+    margin: 0.5rem auto;
+}
+
+/* Mission Section */
+.mission-section {
+    padding: 4rem 0;
+    background-color: #fff;
+}
+
+.mission-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    margin-bottom: 2rem;
+}
+
+.mission-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(198, 40, 40, 0.2);
+}
+
+.mission-card .card-body {
+    padding: 2rem;
+    text-align: center;
+}
+
+.icon-container {
+    width: 80px;
+    height: 80px;
+    background-color: #f9e0e0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.mission-icon {
+    color: #c62828;
+    font-size: 2rem;
+}
+
+.mission-card .card-title {
+    color: #c62828;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.mission-card .card-text {
+    color: #666;
+}
+
+/* Story Section */
+.story-section {
+    padding: 4rem 0;
+    background-color: #f9f3f0;
+}
+
+.story-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.story-image {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 3px solid #c62828;
+}
+
+/* Team Section */
+.team-section {
+    padding: 4rem 0;
+    background-color: #fff;
+}
+
+.team-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.team-card .card-title {
+    color: #c62828;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.team-card .card-text {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.team-image {
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Values Section */
+.values-section {
+    padding: 4rem 0;
+    background-color: #f9f3f0;
+}
+
+.value-item {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.value-icon-container {
+    width: 70px;
+    height: 70px;
+    background-color: #f9e0e0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.value-icon {
+    color: #c62828;
+    font-size: 1.8rem;
+}
+
+.value-item h3 {
+    color: #c62828;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.value-item p {
+    color: #666;
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 4rem 0;
+    background-color: #c62828;
+    color: white;
+}
+
+.cta-section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.cta-section p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.cta-button {
+    background-color: white;
+    color: #c62828;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cta-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .story-text {
+        font-size: 1rem;
+    }
+}

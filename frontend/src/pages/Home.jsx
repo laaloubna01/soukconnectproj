@@ -16,7 +16,7 @@ const HomePage = () => {
                 buttonText: "Explorer"
             },
             {
-                title: "Savoir-Faire Artisanal",
+                title: "Artisanat",
                 description: "Des créations uniques issues de notre riche patrimoine",
                 image: "https://marrakech-foryou.com/wp-content/uploads/2024/07/activites-marrakech-importance-artisanat-economie.jpg",
                 buttonText: "Découvrir"
@@ -223,14 +223,20 @@ const HomePage = () => {
     return (
         <div className="home-page">
             {/* Hero Carousel */}
-            <Carousel fade controls={false} indicators={false} interval={3000} className="hero-carousel mb-5">
+            {/* Hero Carousel */}
+            <Carousel fade controls={true} indicators={false} interval={3000} className="hero-carousel mb-5">
                 {pageData.heroSlides.map((slide, index) => (
                     <Carousel.Item key={index}>
                         <div
                             className="hero-slide"
-                            style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${slide.image})` }}
+                            style={{
+                                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${slide.image})`,
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                height: "80vh"
+                            }}
                         >
-                            <div className="hero-content text-center">
+                            <div className="hero-content text-center d-flex flex-column justify-content-center h-100 text-white">
                                 <h1 className="display-4 fw-bold mb-3">{slide.title}</h1>
                                 <p className="lead mb-4">{slide.description}</p>
                                 <Button
@@ -246,6 +252,7 @@ const HomePage = () => {
                     </Carousel.Item>
                 ))}
             </Carousel>
+
 
             {/* Catégories */}
             <section className="py-5 bg-light">
