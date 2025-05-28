@@ -97,24 +97,8 @@ const HomePage = () => {
                 category: "Artisanat",
                 rating: 4.7
             },
-            {
-                id: 5,
-                name: "Couscous Royal",
-                price: "120 DH",
-                description: "Mélange de semoule et légumes secs",
-                image: "https://assets.afcdn.com/recipe/20200408/109520_w1024h1024c1cx1060cy707.webp",
-                category: "Alimentation",
-                rating: 4.6
-            },
-            {
-                id: 6,
-                name: "Lanterne Marocaine",
-                price: "280 DH",
-                description: "Lanterne en métal sculpté",
-                image: "https://www.marocopedia.com/wp-content/uploads/2021/01/lanterne-marocaine.jpg",
-                category: "Décoration",
-                rating: 4.4
-            }
+
+
         ],
         artisans: [
             {

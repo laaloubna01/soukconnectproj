@@ -1,49 +1,91 @@
+/* Fond rouge sobre et pleine hauteur */
+.login-wrapper {
+    height: 100vh;
+    background-color: #b30000; /* rouge profond */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-.login-form {
-    
-    max-width: 455px;
-    margin: 30px auto;
-    padding: 33px;
-    border: 2px solid #f4efef;
-    border-radius: 13px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 68px;
+/* Carte blanche pour le formulaire */
+.login-card {
     background-color: white;
+    padding: 40px 50px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    width: 360px;
+    text-align: center;
 }
 
-.form-group {
-    margin-bottom: 15px;
+/* Titre en rouge */
+.login-title {
+    color: #b30000;
+    font-size: 28px;
+    margin-bottom: 30px;
+    font-weight: 700;
 }
 
-label {
+/* Formulaire */
+.login-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.login-form label {
+    font-weight: 600;
+    color: #444;
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    text-align: left; /* Align labels to the left */
+    margin-bottom: 6px;
 }
 
-input[type="text"],
-input[type="password"] {
+.login-form input[type="text"],
+.login-form input[type="password"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s;
 }
 
-input[type="submit"] {
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: #b30000;
+    outline: none;
+}
+
+/* Bouton rouge */
+.login-form input[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: #b30000;
+    color: white;
     border: none;
-    border-radius: 7px;
+    font-size: 17px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 16px;
-    width: 100%;
+    font-weight: 700;
+    transition: background-color 0.3s;
 }
 
-input[type="submit"]:hover {
-    background-color: #0056b3;
+.login-form input[type="submit"]:hover {
+    background-color: #800000;
 }
 
+/* Lien inscription */
+.register-link {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #333;
+}
 
+.register-link a {
+    color: #b30000;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
