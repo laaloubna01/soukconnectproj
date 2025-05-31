@@ -191,7 +191,10 @@ public class ChatBotService {
             messages.add(messageUser);
 
             Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("model", "meta-llama/llama-3.2-3b-instruct:free");
+
+            requestBody.put("model", "nvidia/llama/llama-3.3-nemotron-super-49b-v1:free");
+
+            //requestBody.put("model", "meta-llama/llama-3.2-3b-instruct:free");
             requestBody.put("messages", messages);
 
             logger.info("Sending request to OpenRouter API");
